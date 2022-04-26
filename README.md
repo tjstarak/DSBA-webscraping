@@ -1,7 +1,7 @@
-#Instruction how to run your scrapers
+# Instruction how to run scrapers in our project
 
-##1 Beautiful Soup
+## 1 Beautiful Soup
 
-##2 Scrapy
+## 2 Scrapy
 
-##3 Selenium
+## 3 Selenium
