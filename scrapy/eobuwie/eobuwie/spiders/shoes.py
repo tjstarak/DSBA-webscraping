@@ -2,7 +2,7 @@
 import scrapy
 from scrapy.selector import Selector
 
-LIMIT_PAGES = False
+LIMIT_PAGES = True
 
 class Shoe(scrapy.Item):
     first_name = scrapy.Field()
