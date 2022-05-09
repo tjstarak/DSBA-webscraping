@@ -9,6 +9,6 @@
 
 - To disable verbose output add ```--nolog```
 
-- If the flag ```LIMIT_PAGES``` is set to ```FALSE``` in the scrapper code, an additional parameter can be passed to modify the number of pages scraped: ```scrapy crawl shoes -O output.csv -a pages=500```
+- If the flag ```LIMIT_PAGES``` is set to ```FALSE``` in the scraper code, an additional parameter can be passed to modify the number of pages scraped: ```scrapy crawl shoes -O output.csv -a pages=500```
 
 ## 3 Selenium
