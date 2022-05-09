@@ -1,0 +1,7 @@
+source ~/Documents/DSBA/webscraping/venv/bin/activate
+
+cd ~/Documents/GitHub/DSBA-webscraping/scrapy/eobuwie
+scrapy crawl shoes -O output.csv
+scrapy crawl shoes -O output.csv --nolog
+
+scrapy crawl shoes -O output.csv -a pages=470 --nolog
