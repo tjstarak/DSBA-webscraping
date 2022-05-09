@@ -48,8 +48,11 @@ class ShoeSpider(scrapy.Spider):
                 regular_price = old_price
             
             if special_price is not None:
-                special_price = special_price.replace('zł', '').replace(' ', '').replace(',', '.')
-            regular_price = regular_price.replace('zł', '').replace(' ', '').replace(',', '.')
+                special_price = special_price.replace('zł', '').replace(' ', '').replace(',', '.').strip()
+            regular_price = regular_price.replace('zł', '').replace(' ', '').replace(',', '.').strip()
+            first_name = first_name.strip()
+            second_name = second_name.strip()
+            
             s = Shoe()
             s['first_name'] = first_name
             s['second_name'] = second_name
