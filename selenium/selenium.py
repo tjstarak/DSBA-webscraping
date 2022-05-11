@@ -1,9 +1,8 @@
-## to be edited!
-
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 import time
 import getpass
 import datetime
@@ -15,7 +14,7 @@ options = webdriver.firefox.options.Options()
 options.headless = False
 driver = webdriver.Firefox(options = options, service=ser)
 
-url = 'https://www.eobuwie.com.pl/'
+url = 'https://www.eobuwie.com.pl/damskie.html'
 
 LIMIT_PAGES = False
 
@@ -26,37 +25,66 @@ def __init__(self, pages=500, *args, **kwargs):
     else:
         self.pages = pages
 
-# Actual program:
+
 driver.get(url)
-
-#time.sleep(5)
-
-omit_cookies = driver.find_element(By.XPATH, '//button[@type="button"]')
-omit_cookies.click()
-
 time.sleep(5)
 
-#omit_ad = driver.find_element(By.XPATH, '/html/body/aside/div/button')
-#omit_ad.click()
-
-#damskie = driver.find_element(By.XPATH, '/html/body/header/nav/ul/li[2]/a')
-#damskie.click()
-
-damskie = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "//a[@href='https://www.eobuwie.com.pl/damskie.html']").click()))
-
+# Accepting cookies
+WebDriverWait(driver, 100).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[6]/div/div/div/div[2]/button[1]'))).click()
 time.sleep(5)
 
-#chat = driver.find_element(By.XPATH, '/html/body/div[1]/div/aside[1]/div/div[1]/ul[1]/li[2]/button')
-#chat.click()
+# Actual program:
+# Extracting first names of shoes on the page. First names include two parts:
+# 1) 1st word indicates the category of shoes e.g. sneakers, flip-flops etc.
+# 2) 2nd, 3rd, 4th words describe the brand of shoes of certain category.
+first_names = driver.find_elements(By.CLASS_NAME, 'products-list__name-first')
+for name in first_names:
+    try:
+        first_name = name.text
+        print(first_name)
+    except:
+        pass
 
-#time.sleep(5)
+print(#####)
 
-#bot_test_chat = driver.find_element(By.XPATH, '/html/body/div[1]/div/aside[2]/div[3]/ul[1]/li[3]/div[2]/h5')
-#bot_test_chat.click()
+# Extracting second names of shoes, which are ID's of each product on webpage.
+second_names = driver.find_elements(By.CLASS_NAME, 'products-list__name-second')
+for id in second_names:
+    try:
+        second_name = id.text
+        print(second_name)
+    except:
+        pass
 
-#time.sleep(5)
+print(#####)
 
-#element = driver.find_element(By.XPATH, '//div/button/input[@type="file"]')
-#element.send_keys("/Users/karolina.szczesna/Desktop/its.py")
+# Extracting regular prices for shoes, which are not on sale.
+regular_prices = driver.find_elements(By.CLASS_NAME, 'products-list__regular-price')
+for i in regular_prices:
+    try:
+        regular_price = i.text
+        print(regular_price)
+    except:
+        pass
 
-#time.sleep(0.3)
+print(#####)
+
+# Extracting old prices for shoes, which are currently on sale.
+old_prices = driver.find_elements(By.CLASS_NAME, 'products-list__regular-price')
+for ii in old_prices:
+    try:
+        old_price = ii.text
+        print(old_price)
+    except:
+        pass
+
+print(#####)
+
+# Extracting special prices for shoes, which are currently on sale.
+special_prices = driver.find_elements(By.CLASS_NAME, 'products-list__special-price')
+for iii in special_prices:
+    try:
+        special_price = iii.text
+        print(special_price)
+    except:
+        pass
