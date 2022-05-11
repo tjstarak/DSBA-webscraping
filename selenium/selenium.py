@@ -4,8 +4,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 import time
-import getpass
-import datetime
 
 # Init:
 gecko_path = '/Users/karolina.szczesna/.Trash/geckodriver'
