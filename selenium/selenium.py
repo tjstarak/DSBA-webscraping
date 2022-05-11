@@ -25,7 +25,6 @@ def __init__(self, pages=500, *args, **kwargs):
     else:
         self.pages = pages
 
-
 driver.get(url)
 time.sleep(5)
 
