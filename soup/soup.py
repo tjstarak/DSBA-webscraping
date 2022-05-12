@@ -3,7 +3,7 @@ LIMIT_PAGES = True
 from bs4 import BeautifulSoup
 import requests
 import pandas as pd
-from timeit import default_timer as timer
+
 
 #This part gets number of pages (based on bottom toolbar) or sets it to 100 if parameter above - LIMIT_PAGES is set to True
 url = 'https://www.eobuwie.com.pl/damskie.html'
