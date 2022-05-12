@@ -42,8 +42,6 @@ for name in first_names:
     except:
         pass
 
-print(#####)
-
 # Extracting second names of shoes, which are ID's of each product on webpage.
 second_names = driver.find_elements(By.CLASS_NAME, 'products-list__name-second')
 for id in second_names:
@@ -64,8 +62,6 @@ for i in regular_prices:
     except:
         pass
 
-print(#####)
-
 # Extracting old prices for shoes, which are currently on sale.
 old_prices = driver.find_elements(By.CLASS_NAME, 'products-list__regular-price')
 for ii in old_prices:
@@ -74,8 +70,6 @@ for ii in old_prices:
         print(old_price)
     except:
         pass
-
-print(#####)
 
 # Extracting special prices for shoes, which are currently on sale.
 special_prices = driver.find_elements(By.CLASS_NAME, 'products-list__special-price')
