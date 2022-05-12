@@ -14,7 +14,7 @@ max_page = bs.find_all('a', {'class':'toolbar-bottom__pager-item'})
 max = max_page[-2].text
 
 if LIMIT_PAGES:
-    last_page = 4
+    last_page = 100
 else:
     last_page = int(max)
 
