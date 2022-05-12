@@ -58,6 +58,7 @@ for i in range(1,last_page+1):
         second_name_list.append(second_name.strip())
 
 d = pd.DataFrame(list(zip(first_name_list,second_name_list,regular_price_list,special_price_list)),columns=['First_name','Second_name','Regular_price','Special_price'])
+print(d)
 
 #This part saves data to csv.
 #d.to_csv('shoes.csv')
