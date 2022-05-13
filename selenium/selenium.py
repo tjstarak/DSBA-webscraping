@@ -28,12 +28,15 @@ for page in range(1, 3):
     driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
     driver.get(url)
 
-    time.sleep(5)
+    time.sleep(3)
 
     # accepting cookies
-    WebDriverWait(driver, 20).until(
-        EC.element_to_be_clickable((By.XPATH, '/html/body/div[6]/div/div/div/div[2]/button[1]'))).click()
-    time.sleep(5)
+    try:
+        WebDriverWait(driver, 5).until(
+            EC.element_to_be_clickable((By.XPATH, '/html/body/div[6]/div/div/div/div[2]/button[1]'))).click()
+    except:
+        pass
+    time.sleep(3)
 
     # extracting first names of shoes on the page. First names include two parts:
     # 1) 1st word indicates the category of shoes e.g. sneakers, flip-flops etc.
@@ -68,7 +71,7 @@ for page in range(1, 3):
         regular_price_list.append(regular_price.replace('zł', '').replace(' ', '').replace(',', '.').strip())
 
     # extracting old prices for shoes, which are currently on sale.
-    old_prices = driver.find_elements(By.CLASS_NAME, 'products-list__regular-price')
+    old_prices = driver.find_elements(By.CLASS_NAME, 'products-list__old-price')
     for ii in old_prices:
         try:
             old_price = ii.text
