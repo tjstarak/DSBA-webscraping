@@ -21,8 +21,7 @@ old_price_list = []
 
 LIMIT_PAGES = False
 
-# scraping information about shoes from 469 subpages on webpage
-for page in range(1, 470):
+for page in range(1, 3):
 
     url = "https://www.eobuwie.com.pl/damskie.html?p=" + str(page)
     driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
@@ -33,7 +32,6 @@ for page in range(1, 470):
     # accepting cookies
     WebDriverWait(driver, 1000).until(
         EC.element_to_be_clickable((By.XPATH, '/html/body/div[6]/div/div/div/div[2]/button[1]'))).click()
-    
     time.sleep(5)
 
     # extracting first names of shoes on the page. First names include two parts:
@@ -84,16 +82,23 @@ for page in range(1, 470):
             pass
 
     if special_prices is not None:
-        special_price_list.append(special_prices.replace('zł', '').replace(' ', '').replace(',', '.').strip())
+        special_price_list.append(special_price.replace('zł', '').replace(' ', '').replace(',', '.').strip())
     else:
         special_price_list.append(None)
 
-    regular_price_list.append(regular_prices.replace('zł', '').replace(' ', '').replace(',', '.').strip())
-    old_price_list.append(old_prices.replace('zł', '').replace(' ', '').replace(',', '.').strip())
-    first_name_list.append(first_names.strip())
-    second_name_list.append(second_names.strip())
+    regular_price_list.append(regular_price.replace('zł', '').replace(' ', '').replace(',', '.').strip())
+    old_price_list.append(old_price.replace('zł', '').replace(' ', '').replace(',', '.').strip())
+    first_name_list.append(first_name.strip())
+    second_name_list.append(second_name.strip())
 
-d = pd.DataFrame(list(zip(first_name_list, second_name_list, regular_price_list, old_price_list, special_price_list)), columns=['First_name','Second_name','Regular_price','Old_price','Special_price'])
-print(d)
+print(first_name_list)
+print(second_name_list)
+print(regular_price_list)
+print(special_price_list)
+print(old_price_list)
+
+d = pd.DataFrame(list(zip(first_name_list, second_name_list, regular_price_list, special_price_list), old_price_list)),
+               columns =['First name', 'Second name', 'Regular price', 'Special price', 'Old price'])
+d
 
 driver.close()
