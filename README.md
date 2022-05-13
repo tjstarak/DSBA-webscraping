@@ -2,6 +2,8 @@
 
 ## 1 Beautiful Soup
 
+- Run full code in Python3 interpreter: ```python3 soup.py```
+
 ## 2 Scrapy
 
 - Go into: ```DSBA-webscraping/scrapy/eobuwie```
