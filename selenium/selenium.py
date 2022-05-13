@@ -39,7 +39,7 @@ for page in range(1, 470):
     # extracting first names of shoes on the page. First names include two parts:
     # 1) 1st word indicates the category of shoes e.g. sneakers, flip-flops etc.
     # 2) 2nd, 3rd, 4th words describe the brand of shoes of certain category.
-    first_names = driver.find_elements(By.CLASS_NAME, 'products-list__name-first').strip()
+    first_names = driver.find_elements(By.CLASS_NAME, 'products-list__name-first')
     for name in first_names:
         try:
             first_name = name.text
