@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.firefox import GeckoDriverManager
+import pandas as pd
 import time
 
 # init:
@@ -12,20 +13,16 @@ ser = Service(gecko_path)
 options = webdriver.firefox.options.Options()
 options.headless = False
 
-first_name_list=[]
-second_name_list=[]
-regular_price_list=[]
-special_price_list=[]
-old_price_list=[]
+first_name_list = []
+second_name_list = []
+regular_price_list = []
+special_price_list = []
+old_price_list = []
 
 LIMIT_PAGES = False
 
-#if LIMIT_PAGES:
-    #last_page = 100
-#else:
-    #last_page = int(max)
-
-for page in range(1, 3):
+# scraping information about shoes from 469 subpages on webpage
+for page in range(1, 470):
 
     url = "https://www.eobuwie.com.pl/damskie.html?p=" + str(page)
     driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
@@ -36,12 +33,13 @@ for page in range(1, 3):
     # accepting cookies
     WebDriverWait(driver, 1000).until(
         EC.element_to_be_clickable((By.XPATH, '/html/body/div[6]/div/div/div/div[2]/button[1]'))).click()
+    
     time.sleep(5)
 
     # extracting first names of shoes on the page. First names include two parts:
     # 1) 1st word indicates the category of shoes e.g. sneakers, flip-flops etc.
     # 2) 2nd, 3rd, 4th words describe the brand of shoes of certain category.
-    first_names = driver.find_elements(By.CLASS_NAME, 'products-list__name-first')
+    first_names = driver.find_elements(By.CLASS_NAME, 'products-list__name-first').strip()
     for name in first_names:
         try:
             first_name = name.text
@@ -95,7 +93,7 @@ for page in range(1, 3):
     first_name_list.append(first_names.strip())
     second_name_list.append(second_names.strip())
 
-#d = pd.DataFrame(list(zip(first_name_list,second_name_list,regular_price_list,special_price_list)),columns=['First_name','Second_name','Regular_price','Special_price'])
+d = pd.DataFrame(list(zip(first_name_list, second_name_list, regular_price_list, old_price_list, special_price_list)), columns=['First_name','Second_name','Regular_price','Old_price','Special_price'])
 print(d)
 
 driver.close()
