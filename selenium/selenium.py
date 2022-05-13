@@ -6,9 +6,12 @@ from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.firefox import GeckoDriverManager
 import pandas as pd
 import time
+from timeit import default_timer as timer
+
+start = timer()
 
 # init
-gecko_path = '/Users/karolina.szczesna/.Trash/geckodriver'
+gecko_path = '/Users/slawek/.Trash/geckodriver'
 ser = Service(gecko_path)
 options = webdriver.firefox.options.Options()
 options.headless = False
@@ -17,12 +20,10 @@ options.headless = False
 first_name_list = []
 second_name_list = []
 price_list = []
-special_price_list = []
-old_price_list = []
 
 LIMIT_PAGES = False
 
-for page in range(1, 3):
+for page in range(1, 101):
 
     url = "https://www.eobuwie.com.pl/damskie.html?p=" + str(page)
     driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
@@ -68,7 +69,7 @@ for page in range(1, 3):
             print(price)
         except:
             pass
-        price_list.append(price.replace('zł', '').replace(' ', '').replace(',', '.').strip())
+        price_list.append(price.replace('zł', '').replace(' ', '').replace(',', '.').replace('\n', ',').strip())
 
 print(first_name_list)
 print(second_name_list)
@@ -80,14 +81,18 @@ print(len(first_name_list), len(second_name_list), len(price_list))
 d = pd.DataFrame({
     'First name': first_name_list,
     'Second name': second_name_list,
-    'Regular price': price_list,
-    'Old price': old_price_list,
-    'Special price': special_price_list
+    'Regular price': price_list
 })
-d
 
 # closing driver's actions on a webpage
 driver.close()
 
+# dataframe transformations
+# adding new column for shoes special price in case of a discount (lower price than the regular one) and spliting prices
+d[['Regular price','Special price']] = d['Regular price'].str.split(',', expand=True)
+
+end = timer()
+print(end - start)
+
 # saving data to csv
-# d.to_csv('shoes.csv')
+d.to_csv('shoes.csv')
