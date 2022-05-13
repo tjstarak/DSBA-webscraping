@@ -16,7 +16,7 @@ options.headless = False
 # creating empty dataframe
 first_name_list = []
 second_name_list = []
-regular_price_list = []
+price_list = []
 special_price_list = []
 old_price_list = []
 
@@ -38,7 +38,7 @@ for page in range(1, 3):
         pass
     time.sleep(3)
 
-    # extracting first names of shoes on the page. First names include two parts:
+    # extracting first names of shoes on the page; first names include two parts:
     # 1) 1st word indicates the category of shoes e.g. sneakers, flip-flops etc.
     # 2) 2nd, 3rd, 4th words describe the brand of shoes of certain category.
     first_names = driver.find_elements(By.CLASS_NAME, 'products-list__name-first')
@@ -50,7 +50,7 @@ for page in range(1, 3):
             pass
         first_name_list.append(first_name.strip())
 
-    # extracting second names of shoes, which are ID's of each product on webpage.
+    # extracting second names of shoes, which are ID's of each product on webpage
     second_names = driver.find_elements(By.CLASS_NAME, 'products-list__name-second')
     for id in second_names:
         try:
@@ -60,53 +60,34 @@ for page in range(1, 3):
             pass
         second_name_list.append(second_name.strip())
 
-    # extracting regular prices for shoes, which are not on sale.
-    regular_prices = driver.find_elements(By.CLASS_NAME, 'products-list__regular-price')
-    for i in regular_prices:
+    # extracting all prices for shoes
+    prices = driver.find_elements(By.CLASS_NAME, 'products-list__price-box')
+    for i in prices:
         try:
-            regular_price = i.text
-            print(regular_price)
+            price = i.text
+            print(price)
         except:
             pass
-        regular_price_list.append(regular_price.replace('zł', '').replace(' ', '').replace(',', '.').strip())
-
-    # extracting old prices for shoes, which are currently on sale.
-    old_prices = driver.find_elements(By.CLASS_NAME, 'products-list__old-price')
-    for ii in old_prices:
-        try:
-            old_price = ii.text
-            print(old_price)
-        except:
-            pass
-        old_price_list.append(old_price.replace('zł', '').replace(' ', '').replace(',', '.').strip())
-
-    # extracting special prices for shoes, which are currently on sale.
-    special_prices = driver.find_elements(By.CLASS_NAME, 'products-list__special-price')
-    for iii in special_prices:
-        try:
-            special_price = iii.text
-            print(special_price)
-        except:
-            pass
-        if special_prices is not None:
-            special_price_list.append(special_price.replace('zł', '').replace(' ', '').replace(',', '.').strip())
-        else:
-            special_price_list.append(None)
+        price_list.append(price.replace('zł', '').replace(' ', '').replace(',', '.').strip())
 
 print(first_name_list)
 print(second_name_list)
-print(regular_price_list)
-print(old_price_list)
-print(special_price_list)
+print(price_list)
 
+print(len(first_name_list), len(second_name_list), len(price_list))
+
+# putting data from lists into dataframe
 d = pd.DataFrame({
     'First name': first_name_list,
     'Second name': second_name_list,
-    'Regular price': regular_price_list,
+    'Regular price': price_list,
     'Old price': old_price_list,
     'Special price': special_price_list
 })
-
 d
 
+# closing driver's actions on a webpage
 driver.close()
+
+# saving data to csv
+# d.to_csv('shoes.csv')
