@@ -7,12 +7,13 @@ from webdriver_manager.firefox import GeckoDriverManager
 import pandas as pd
 import time
 
-# init:
+# init
 gecko_path = '/Users/karolina.szczesna/.Trash/geckodriver'
 ser = Service(gecko_path)
 options = webdriver.firefox.options.Options()
 options.headless = False
 
+# creating empty dataframe
 first_name_list = []
 second_name_list = []
 regular_price_list = []
@@ -30,7 +31,7 @@ for page in range(1, 3):
     time.sleep(5)
 
     # accepting cookies
-    WebDriverWait(driver, 1000).until(
+    WebDriverWait(driver, 20).until(
         EC.element_to_be_clickable((By.XPATH, '/html/body/div[6]/div/div/div/div[2]/button[1]'))).click()
     time.sleep(5)
 
@@ -44,6 +45,7 @@ for page in range(1, 3):
             print(first_name)
         except:
             pass
+        first_name_list.append(first_name.strip())
 
     # extracting second names of shoes, which are ID's of each product on webpage.
     second_names = driver.find_elements(By.CLASS_NAME, 'products-list__name-second')
@@ -53,6 +55,7 @@ for page in range(1, 3):
             print(second_name)
         except:
             pass
+        second_name_list.append(second_name.strip())
 
     # extracting regular prices for shoes, which are not on sale.
     regular_prices = driver.find_elements(By.CLASS_NAME, 'products-list__regular-price')
@@ -62,6 +65,7 @@ for page in range(1, 3):
             print(regular_price)
         except:
             pass
+        regular_price_list.append(regular_price.replace('zł', '').replace(' ', '').replace(',', '.').strip())
 
     # extracting old prices for shoes, which are currently on sale.
     old_prices = driver.find_elements(By.CLASS_NAME, 'products-list__regular-price')
@@ -71,6 +75,7 @@ for page in range(1, 3):
             print(old_price)
         except:
             pass
+        old_price_list.append(old_price.replace('zł', '').replace(' ', '').replace(',', '.').strip())
 
     # extracting special prices for shoes, which are currently on sale.
     special_prices = driver.find_elements(By.CLASS_NAME, 'products-list__special-price')
@@ -80,25 +85,25 @@ for page in range(1, 3):
             print(special_price)
         except:
             pass
-
-    if special_prices is not None:
-        special_price_list.append(special_price.replace('zł', '').replace(' ', '').replace(',', '.').strip())
-    else:
-        special_price_list.append(None)
-
-    regular_price_list.append(regular_price.replace('zł', '').replace(' ', '').replace(',', '.').strip())
-    old_price_list.append(old_price.replace('zł', '').replace(' ', '').replace(',', '.').strip())
-    first_name_list.append(first_name.strip())
-    second_name_list.append(second_name.strip())
+        if special_prices is not None:
+            special_price_list.append(special_price.replace('zł', '').replace(' ', '').replace(',', '.').strip())
+        else:
+            special_price_list.append(None)
 
 print(first_name_list)
 print(second_name_list)
 print(regular_price_list)
-print(special_price_list)
 print(old_price_list)
+print(special_price_list)
 
-d = pd.DataFrame(list(zip(first_name_list, second_name_list, regular_price_list, special_price_list), old_price_list)),
-               columns =['First name', 'Second name', 'Regular price', 'Special price', 'Old price'])
+d = pd.DataFrame({
+    'First name': first_name_list,
+    'Second name': second_name_list,
+    'Regular price': regular_price_list,
+    'Old price': old_price_list,
+    'Special price': special_price_list
+})
+
 d
 
 driver.close()
