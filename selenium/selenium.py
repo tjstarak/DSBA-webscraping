@@ -11,7 +11,7 @@ from timeit import default_timer as timer
 start = timer()
 
 # init
-gecko_path = '/Users/slawek/.Trash/geckodriver'
+gecko_path = '/Users/karolina.szczesna/.Trash/geckodriver'
 ser = Service(gecko_path)
 options = webdriver.firefox.options.Options()
 options.headless = False
@@ -23,7 +23,8 @@ price_list = []
 
 LIMIT_PAGES = False
 
-for page in range(1, 101):
+# setting range of subpages to scrape 100 in total subpages from main url 
+for page in range(0, 101):
 
     url = "https://www.eobuwie.com.pl/damskie.html?p=" + str(page)
     driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
@@ -61,7 +62,7 @@ for page in range(1, 101):
             pass
         second_name_list.append(second_name.strip())
 
-    # extracting all prices for shoes
+    # extracting all prices for shoes (regular price, special price and regular price in case of discount)
     prices = driver.find_elements(By.CLASS_NAME, 'products-list__price-box')
     for i in prices:
         try:
@@ -70,12 +71,6 @@ for page in range(1, 101):
         except:
             pass
         price_list.append(price.replace('zł', '').replace(' ', '').replace(',', '.').replace('\n', ',').strip())
-
-print(first_name_list)
-print(second_name_list)
-print(price_list)
-
-print(len(first_name_list), len(second_name_list), len(price_list))
 
 # putting data from lists into dataframe
 d = pd.DataFrame({
@@ -88,7 +83,7 @@ d = pd.DataFrame({
 driver.close()
 
 # dataframe transformations
-# adding new column for shoes special price in case of a discount (lower price than the regular one) and spliting prices
+# adding new column for shoes special price in case of a discount (lower price than the regular one) and spliting prices to two columns
 d[['Regular price','Special price']] = d['Regular price'].str.split(',', expand=True)
 
 end = timer()
